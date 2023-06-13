@@ -1,0 +1,64 @@
+--set7
+
+/*1.Delete all employees in the "employees_backup" table who were hired in the
+second half of the year (July to December).*/
+ delete from employees_backup where extract(month from hire_date) between 7 and 12;
+ 
+ /*2.use the UNION ALL operator to list all country_id values from both the "locations" and "countries" tables.*/
+ 
+ select country_id from locations
+ union all 
+ select country_id from countries;
+ 
+ /*3.Display the dense rank of employees based on salary within their department in the "employees" table.*/
+ --analitik funk
+--
+
+/*4.Display the length of service for each employee 
+in the "employees" table in years and months.*/
+
+---
+
+/*5.Find the job title of the employee who earns the second highest salary 
+in the "employees" table.*/
+
+
+select e.salary,j.job_title
+from employees e join jobs j on
+e.job_id=j.job_id
+where e.salary=
+(select max(e.salary) from employees
+where salary <(select max(e.salary) from employees));
+ 
+ --set8
+ 
+ /*1.Select all fields from the "employees" table for employees whose first name contains
+ the letter 'e' at least twice.*/
+ 
+ select*from employees where first_name like '%e%e'
+
+/*2.Write a query that RIGHT JOINs the "employees" table with the "departments" 
+table and displays the employee's first name, last name, and department name*/
+
+select  e.first_name,e.last_name,d.department_name
+from departments d right join employees e on
+e.department_id=d.department_id;
+
+/*3. Rename the "employee_projects" table to "projects".*/
+
+alter table employee_projects rename to  projects;
+
+/*4.For each job_id in the "employees" table, find the difference between
+the maximum and minimum salaries.*/
+
+select j.job_id, max(e.salary)-min (e.salary) as salary_difference 
+from employees e join jobs j on
+e.job_id=j.job_id
+group by j.job_id;
+
+/*5.Insert a new record into the "projects" table. Use your own discretion for the values.*/
+
+insert into employees_backup values 
+        ( 100 , 'Karim' , 'Karimov', 'karim.a' ,'515.123.47', 
+        to_date('21-Jul-2019', 'dd-MM-yyyy'), 'AD-PRES' , 500, NULL , NULL, 101
+        );
